@@ -3,6 +3,7 @@ version: '3.8'
 services:
   traefik:
     image: traefik:v2.9
+    container_name: traefik
     command:
       - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
@@ -56,6 +57,7 @@ services:
 
   mysql:
     image: kylefs/dev-mysql:latest
+    container_name: mysql
     volumes:
       - "db_data:/var/lib/mysql"
     restart: "no"
