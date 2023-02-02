@@ -22,6 +22,8 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "le_data:/letsencrypt"
+    networks:
+      - bw
 
   vaultwarden:
     image: vaultwarden/server:latest
@@ -49,6 +51,8 @@ services:
         - "traefik.http.routers.vaultwarden-https.tls.certresolver=lehttpresolver"
         - "traefik.http.middlewares.auto-https.redirectscheme.scheme=https"
         - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
+    networks:
+      - bw
 
   mysql:
     image: kylefs/dev-mysql:latest
@@ -60,6 +64,8 @@ services:
       MYSQL_DATABASE: vaultwarden
       MYSQL_USER_FILE: ${VW_MYSQL_USER}
       MYSQL_PASSWORD_FILE: ${VW_MYSQL_PASS}
+    networks:
+      - bw
 
 volumes:
   le_data:
