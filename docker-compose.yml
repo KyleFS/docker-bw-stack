@@ -67,10 +67,10 @@ services:
       - "db_data:/var/lib/mysql"
     restart: "no"
     environment:
-      MYSQL_ROOT_PASSWORD: ${VW_MYSQL_ROOT}
-      MYSQL_DATABASE: vaultwarden
-      MYSQL_USER: ${VW_MYSQL_USER}
-      MYSQL_PASSWORD: ${VW_MYSQL_PASS}
+      - "MYSQL_RANDOM_ROOT_PASSWORD=true"
+      - "MYSQL_DATABASE=vaultwarden"
+      - "MYSQL_USER=${VW_MYSQL_USER}"
+      - "MYSQL_PASSWORD=${VW_MYSQL_PASS}"
     networks:
       - bw
 
