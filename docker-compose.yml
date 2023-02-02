@@ -16,6 +16,7 @@ services:
       - "--api.insecure"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.wvnotifications.address=:3012"
       - "--certificatesresolvers.lehttpresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.lehttpresolver.acme.email=${VW_ADMIN_EMAIL}"
       - "--certificatesresolvers.lehttpresolver.acme.storage=letsencrypt/acme.json"
@@ -63,6 +64,10 @@ services:
       - "traefik.http.routers.vaultwarden-https.tls.certresolver=lehttpresolver"
       - "traefik.http.middlewares.auto-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
+      # WSS
+      - "traefik.http.services.vaultwarden-wss.loadbalancer.server.port=3012"
+      - "traefik.http.routers.vaultwarden-https.rule=Host(`${VW_URL}`) && Path(`/notifications/hub`)"
+      - "traefik.http.routers.vaultwarden-https.service=vaultwarden-wss"
     networks:
       - bw
 
