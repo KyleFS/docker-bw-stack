@@ -4,6 +4,7 @@ services:
   traefik:
     image: traefik:v2.9
     container_name: traefik
+    restart: "no"
     command:
       - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
@@ -29,7 +30,7 @@ services:
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
-    restart: always
+    restart: "no"
     environment:
       - "WEBSOCKET_ENABLED=true"
       - "DATABASE_URL=mysql://${VW_MYSQL_USER}:${VW_MYSQL_PASS}@mysql/vaultwarden"
