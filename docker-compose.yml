@@ -42,22 +42,22 @@ services:
       - "DATABASE_URL=mysql://${VW_MYSQL_USER}:${VW_MYSQL_PASS}@mysql/vaultwarden"
     volumes:
       - "bw_data:/data"
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        # HTTP
-        - "traefik.http.routers.vaultwarden-http.entrypoints=web"
-        - "traefik.http.routers.vaultwarden-http.rule=Host(`${VW_URL}`)"
-        - "traefik.http.routers.vaultwarden-http.service=vaultwarden"
-        - "traefik.http.routers.vaultwarden-http.middlewares=auto-https@docker"
-        # HTTPS
-        - "traefik.http.routers.vaultwarden-https.entrypoints=websecure"
-        - "traefik.http.routers.vaultwarden-https.rule=Host(`${VW_URL}`)"
-        - "traefik.http.routers.vaultwarden-https.service=vaultwarden"
-        - "traefik.http.routers.vaultwarden-https.tls=true"
-        - "traefik.http.routers.vaultwarden-https.tls.certresolver=lehttpresolver"
-        - "traefik.http.middlewares.auto-https.redirectscheme.scheme=https"
-        - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+      # HTTP
+      - "traefik.http.routers.vaultwarden-http.entrypoints=web"
+      - "traefik.http.routers.vaultwarden-http.rule=Host(`${VW_URL}`)"
+      - "traefik.http.routers.vaultwarden-http.service=vaultwarden"
+      - "traefik.http.routers.vaultwarden-http.middlewares=auto-https@docker"
+      # HTTPS
+      - "traefik.http.routers.vaultwarden-https.entrypoints=websecure"
+      - "traefik.http.routers.vaultwarden-https.rule=Host(`${VW_URL}`)"
+      - "traefik.http.routers.vaultwarden-https.service=vaultwarden"
+      - "traefik.http.routers.vaultwarden-https.tls=true"
+      - "traefik.http.routers.vaultwarden-https.tls.certresolver=lehttpresolver"
+      - "traefik.http.middlewares.auto-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
     networks:
       - bw
 
