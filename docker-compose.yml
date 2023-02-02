@@ -8,6 +8,8 @@ services:
     depends_on:
       - mysql
     command:
+      - "--log.level=DEBUG"
+      - "--api.dashboard=true"
       - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
       - "--providers.docker.network=bw"
