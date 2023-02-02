@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.9
+    command:
+      - "--providers.docker"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=proxy"
+      - "--api.insecure"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.lehttpresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.lehttpresolver.acme.email=${VW_ADMIN_EMAIL}"
+      - "--certificatesresolvers.lehttpresolver.acme.storage=letsencrypt/acme.json"
+    ports:
+      # The HTTP port
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "le_data:/letsencrypt"
+    networks:
+      - proxy
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    environment:
+      WEBSOCKET_ENABLED:
+    volumes:
+      - "bw_data:/data"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+        # HTTP
+        - "traefik.http.routers.vaultwarden-http.entrypoints=web"
+        - "traefik.http.routers.vaultwarden-http.rule=Host(`${VW_URL}`)"
+        - "traefik.http.routers.vaultwarden-http.service=vaultwarden"
+        - "traefik.http.routers.vaultwarden-http.middlewares=auto-https@docker"
+        # HTTPS
+        - "traefik.http.routers.vaultwarden-https.entrypoints=websecure"
+        - "traefik.http.routers.vaultwarden-https.rule=Host(`${VW_URL}`)"
+        - "traefik.http.routers.vaultwarden-https.service=vaultwarden"
+        - "traefik.http.routers.vaultwarden-https.tls=true"
+        - "traefik.http.routers.vaultwarden-https.tls.certresolver=lehttpresolver"
+        - "traefik.http.middlewares.auto-https.redirectscheme.scheme=https"
+        - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
+
+  mysql:
+    image: kylefs/dev-mysql:latest
+    volumes:
+      - "db_data:/var/lib/mysql"
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: ${VW_MYSQL_ROOT}
+      MYSQL_DATABASE: vaultwarden
+      MYSQL_USER_FILE: ${VW_MYSQL_USER}
+      MYSQL_PASSWORD_FILE: ${VW_MYSQL_PASS}
+
+volumes:
+  le_data:
+  bw_data:
+  db_data:

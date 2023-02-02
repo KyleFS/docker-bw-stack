@@ -1,0 +1,31 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Bitwarden
+Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=60
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull vaultwarden/server:latest
+ExecStart=/usr/bin/systemd-docker --cgroups name=systemd --env run \
+  --net=bitwarden \
+  -e ENABLE_DB_WAL='false' \
+  -e SIGNUPS_ALLOWED=false \
+  -e DATABASE_URL=mysql://bitwarden:ADQv3H2kTHEBXRMhDDK5jkSpuGvRxAvc@docker.mysql.service/bitwarden \
+  -e ADMIN_TOKEN=uxMjKYnH6cwrDZ#jOHaxW3yGAfXwdvev6_5DVa8H1NJbD \
+  -e LOG_FILE=/data/bitwarden.log \
+  -e ROCKET_WORKERS=20 \
+  -e ROCKET_TLS='{certs="/ssl/certs.crt",key="/ssl/private.key"}' \
+  -v /etc/ssl/qqq/:/ssl/ \
+  -v /opt/bitwarden/:/data/ \
+  -p 443:80 \
+  --name %n vaultwarden/server:latest
+Restart=on-failure
+RestartSec=10s
+Type=notify
+NotifyAccess=all
