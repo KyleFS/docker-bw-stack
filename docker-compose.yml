@@ -39,6 +39,7 @@ services:
     depends_on:
       - traefik
     environment:
+      - "TIME_ZONE=${VW_TZ}"
       - "WEBSOCKET_ENABLED=true"
       - "DATABASE_URL=mysql://${VW_MYSQL_USER}:${VW_MYSQL_PASS}@mysql/vaultwarden"
       - "ADMIN_TOKEN=${VM_ADMIN_PASS}"
