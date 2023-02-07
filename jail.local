@@ -14,4 +14,4 @@ chain   = DOCKER-USER
 
 [sshd]
 enabled = true
-chain   = DOCKER-USER
+chain   = INPUT

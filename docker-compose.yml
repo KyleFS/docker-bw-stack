@@ -103,7 +103,7 @@ services:
     environment:
       - "TZ=${VW_TZ}"
     volumes:
-      - "jail.local:/config/jail.local"
+      - "./jail.local:/config/fail2ban/jail.local"
       - "/var/log:/var/log:ro"
       - "/var/log/vaultwarden.log:/remotelogs/vaultwarden/vaultwarden.log:ro"
     restart: "no"
