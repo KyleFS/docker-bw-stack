@@ -51,7 +51,7 @@ services:
       - "DOMAIN=https://${VW_URL}"
     volumes:
         - type: bind
-          source: "/var/log/bitwarden.log"
+          source: "/var/log/vaultwarden.log"
           target: "/data/vaultwarden.log"
         - type: volume
           source: "bw_data"
