@@ -42,8 +42,7 @@ services:
       - "TIME_ZONE=${VW_TZ}"
       - "WEBSOCKET_ENABLED=true"
       - "LOG_LEVEL=warn"
-      - "USE_SYSLOG=true"
-      - "EXTENDED_LOGGING=true"
+      - "LOG_FILE=/data/vaultwarden.log"
       - "DATABASE_URL=mysql://${VW_MYSQL_USER}:${VW_MYSQL_PASS}@mysql/vaultwarden"
       - "ADMIN_TOKEN=${VM_ADMIN_PASS}"
       - "SIGNUPS_ALLOWED=false"
@@ -51,7 +50,12 @@ services:
       - "SHOW_PASSWORD_HINT=false"
       - "DOMAIN=https://${VW_URL}"
     volumes:
-      - "bw_data:/data"
+        - type: bind
+          source: "/var/log/bitwarden.log"
+          target: "/data/vaultwarden.log"
+        - type: volume
+          source: "bw_data"
+          target: "/data"
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
