@@ -1,4 +1,4 @@
-# Vault Warden
+# Vaultwarden
 
 ## Initial Setup
 
@@ -13,4 +13,9 @@ Fill in the environmental variable file.
 ```
 mv .env.sample .env
 nano .env
+```
+
+Create an empty log file on the host file system
+```
+sudo touch /var/log/vaultwarden.log
 ```

@@ -93,6 +93,21 @@ services:
     networks:
       - bw
 
+  fail2ban:
+    image: lscr.io/linuxserver/fail2ban:latest
+    container_name: fail2ban
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: host
+    environment:
+      - "TZ=${VW_TZ}"
+    volumes:
+      - "jail.local:/config/jail.local"
+      - "/var/log:/var/log:ro"
+      - "/var/log/vaultwarden.log:/remotelogs/vaultwarden/vaultwarden.log:ro"
+    restart: "no"
+
 networks:
   bw:
 

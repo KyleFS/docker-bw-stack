@@ -1,0 +1,17 @@
+[DEFAULT]
+bantime.increment = true
+bantime.maxtime = 5w
+bantime.factor = 24
+
+bantime  = 1h
+findtime  = 24h
+maxretry  = 5
+ignoreip  = 127.0.0.1/8 ::1
+
+[vaultwarden-auth]
+enabled = true
+chain   = DOCKER-USER
+
+[sshd]
+enabled = true
+chain   = DOCKER-USER
