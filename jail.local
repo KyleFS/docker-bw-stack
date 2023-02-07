@@ -7,11 +7,14 @@ bantime  = 1h
 findtime  = 24h
 maxretry  = 5
 ignoreip  = 127.0.0.1/8 ::1
+banaction = iptables-allports
 
 [vaultwarden-auth]
 enabled = true
 chain   = DOCKER-USER
+action  = iptables-allports[name=vaultwarden]
 
 [sshd]
 enabled = true
 chain   = INPUT
+action  = iptables-allports[name=sshd]
