@@ -66,8 +66,8 @@ services:
       - "traefik.http.middlewares.auto-https.redirectscheme.permanent=true"
       # WSS
       - "traefik.http.services.vaultwarden-wss.loadbalancer.server.port=3012"
-      - "traefik.http.routers.vaultwarden-https.rule=Host(`${VW_URL}`) && Path(`/notifications/hub`)"
-      - "traefik.http.routers.vaultwarden-https.service=vaultwarden-wss"
+      - "traefik.http.routers.vaultwarden-wss.rule=Host(`${VW_URL}`) && Path(`/notifications/hub`)"
+      - "traefik.http.routers.vaultwarden-wss.service=vaultwarden-wss"
     networks:
       - bw
 
