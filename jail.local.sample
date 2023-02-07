@@ -6,8 +6,8 @@ bantime.factor = 24
 bantime   = 1h
 findtime  = 24h
 maxretry  = 5
-ignoreip  = 127.0.0.1/8 ::1
 banaction = iptables-allports
+ignoreip  = 127.0.0.1/8 ::1
 
 [vaultwarden-auth]
 enabled = true
