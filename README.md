@@ -30,8 +30,8 @@ sudo systemctl enable docker.bitwarden.service
 
 As a service, general commands can be used for management.
 ```
-sudo service docker.status stop
-sudo service docker.status start
-sudo service docker.status restart
-sudo service docker.status status
+sudo service docker.bitwarden stop
+sudo service docker.bitwarden start
+sudo service docker.bitwarden restart
+sudo service docker.bitwarden status
 ```
