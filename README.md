@@ -21,3 +21,17 @@ Create an empty log file on the host file system
 ```
 sudo touch /var/log/vaultwarden.log
 ```
+
+The following commands will use the create a systemd service for easy management.
+```
+sudo systemctl link /opt/bitwarden/docker-bw-stack/docker.bitwarden.service
+sudo systemctl enable docker.bitwarden.service
+```
+
+As a service, general commands can be used for management.
+```
+sudo service docker.status stop
+sudo service docker.status start
+sudo service docker.status restart
+sudo service docker.status status
+```
