@@ -8,11 +8,10 @@ services:
     depends_on:
       - mysql
     command:
-      - "--log.level=DEBUG"
-      - "--api.dashboard=true"
+      - "--log.level=WARN"
+      - "--api.dashboard=false"
       - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
-      - "--api.insecure"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.wvnotifications.address=:3012"
@@ -23,8 +22,6 @@ services:
       # The HTTP port
       - "80:80"
       - "443:443"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "le_data:/letsencrypt"
