@@ -39,7 +39,7 @@ services:
     depends_on:
       - traefik
     environment:
-      - "TIME_ZONE=${VW_TZ}"
+      - "TIME_ZONE=Etc/UTC"
       - "WEBSOCKET_ENABLED=true"
       - "LOG_LEVEL=warn"
       - "LOG_FILE=/data/vaultwarden.log"
@@ -101,10 +101,11 @@ services:
       - NET_RAW
     network_mode: host
     environment:
-      - "TZ=${VW_TZ}"
-      - "PUID=1000"
-      - "PGID=1000"
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
     volumes:
+      - "f2b_data:/config"
       - "./jail.local:/config/fail2ban/jail.local"
       - "/var/log:/var/log:ro"
       - "/var/log/vaultwarden.log:/remotelogs/vaultwarden/vaultwarden.log:ro"
@@ -117,3 +118,4 @@ volumes:
   le_data:
   bw_data:
   db_data:
+  f2b_data:
