@@ -1,5 +1,7 @@
 # Vaultwarden
 
+**The fail2ban setup assumes a Debian 10 environment. Adjustments need to be made for other platforms**
+
 ## Initial Setup
 
 Clone this project and enter the directory.
