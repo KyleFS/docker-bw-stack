@@ -1,19 +1,22 @@
 [DEFAULT]
+bantime   = 1h
+findtime  = 24h
+maxretry  = 3
 bantime.increment = true
 bantime.maxtime = 5w
 bantime.factor = 24
 
-bantime   = 1h
-findtime  = 24h
-maxretry  = 5
-banaction = iptables-allports
+# This setup is for Debain 10 which uses nft over iptables. Uncomment chains and switch action to use iptables
+banaction = nftables-input
+
 ignoreip  = 127.0.0.1/8 ::1
 
 [vaultwarden-auth]
 enabled = true
-action  = iptables-allports[name=vaultwarden]
+banaction = nftables-forward
+#chain   = DOCKER-USER
 
 [sshd]
 enabled = true
-chain   = INPUT
-action  = iptables-allports[name=sshd]
+banaction = nftables-input
+#chain   = INPUT
