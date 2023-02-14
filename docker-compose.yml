@@ -107,6 +107,8 @@ services:
     volumes:
       - "f2b_data:/config"
       - "./jail.local:/config/fail2ban/jail.local"
+      - "./nftables-input.conf:/config/fail2ban/action.d/nftables-input.conf"
+      - "./nftables-forward.conf:/config/fail2ban/action.d/nftables-forward.conf"
       - "/var/log:/var/log:ro"
       - "/var/log/vaultwarden.log:/remotelogs/vaultwarden/vaultwarden.log:ro"
     restart: "no"
