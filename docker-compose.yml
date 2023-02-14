@@ -12,7 +12,6 @@ services:
       - "--api.dashboard=true"
       - "--providers.docker"
       - "--providers.docker.exposedByDefault=false"
-      - "--providers.docker.network=bw"
       - "--api.insecure"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -29,8 +28,6 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "le_data:/letsencrypt"
-    networks:
-      - bw
 
   vaultwarden:
     image: vaultwarden/server:latest
@@ -39,7 +36,7 @@ services:
     depends_on:
       - traefik
     environment:
-      - "TIME_ZONE=Etc/UTC"
+      - "TIME_ZONE=${VW_TZ}"
       - "WEBSOCKET_ENABLED=true"
       - "LOG_LEVEL=warn"
       - "LOG_FILE=/data/vaultwarden.log"
@@ -76,8 +73,6 @@ services:
       - "traefik.http.services.vaultwarden-wss.loadbalancer.server.port=3012"
       - "traefik.http.routers.vaultwarden-wss.rule=Host(`${VW_URL}`) && Path(`/notifications/hub`)"
       - "traefik.http.routers.vaultwarden-wss.service=vaultwarden-wss"
-    networks:
-      - bw
 
   mysql:
     image: mysql:5.7
@@ -90,8 +85,6 @@ services:
       - "MYSQL_DATABASE=vaultwarden"
       - "MYSQL_USER=${VW_MYSQL_USER}"
       - "MYSQL_PASSWORD=${VW_MYSQL_PASS}"
-    networks:
-      - bw
 
   fail2ban:
     image: lscr.io/linuxserver/fail2ban:latest
@@ -101,9 +94,9 @@ services:
       - NET_RAW
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=${VW_TZ}"
     volumes:
       - "f2b_data:/config"
       - "./jail.local:/config/fail2ban/jail.local"
@@ -112,9 +105,6 @@ services:
       - "/var/log:/var/log:ro"
       - "/var/log/vaultwarden.log:/remotelogs/vaultwarden/vaultwarden.log:ro"
     restart: "no"
-
-networks:
-  bw:
 
 volumes:
   le_data:
