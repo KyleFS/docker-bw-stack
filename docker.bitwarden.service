@@ -6,7 +6,7 @@ After=docker.service
 [Service]
 Type=oneshot
 WorkingDirectory=/opt/bitwarden/docker-bw-stack
-ExecStart=/usr/bin/env /usr/bin/docker compose -f /opt/bitwarden/docker-bw-stack/docker-compose.yml up -d --remove-orphans
+ExecStart=/usr/bin/env /usr/bin/docker compose -f /opt/bitwarden/docker-bw-stack/docker-compose.yml up -d --remove-orphans --pull
 ExecStop=/usr/bin/env /usr/bin/docker compose -f /opt/bitwarden/docker-bw-stack/docker-compose.yml stop
 StandardOutput=syslog
 RemainAfterExit=yes
