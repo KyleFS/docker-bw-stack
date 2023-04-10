@@ -1,7 +1,7 @@
 [DEFAULT]
 bantime   = 1h
-findtime  = 24h
-maxretry  = 3
+findtime  = 6h
+maxretry  = 5
 bantime.increment = true
 bantime.maxtime = 5w
 bantime.factor = 24
